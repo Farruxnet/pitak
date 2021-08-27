@@ -9,7 +9,6 @@ env = environ.Env(
 )
 environ.Env.read_env()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 SMS_TOKEN = env('SMS_TOKEN')
@@ -29,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'sms'
 ]
 
 MIDDLEWARE = [
