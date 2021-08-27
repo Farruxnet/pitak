@@ -42,27 +42,33 @@ class UserProfile(APIView):
                 'status': 403,
                 'message': "Invalid token"
             })
-        except Exeption as e:
+        except Exception as e:
             return Response({
                 'status': 503,
-                'message': str(e)
+                'message': "Authorization error. Invalid token"
             })
 
 
     def put(self, request):
-        if request.data['Authorization'].split(' ')[1]:
-            user_id = Token.objects.get(key=request.data['Authorization'].split(' ')[1]).user_id
-            user = User.objects.get(id=user_id)
-            serializer = UserProfileSerializer(user, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors)
+        try:
+            if request.data['Authorization'].split(' ')[1]:
+                user_id = Token.objects.get(key=request.data['Authorization'].split(' ')[1]).user_id
+                user = User.objects.get(id=user_id)
+                serializer = UserProfileSerializer(user, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.errors)
 
-        return Response({
-            'status': 403,
-            'message': "Invalid token"
-        })
+            return Response({
+                'status': 403,
+                'message': "Invalid token"
+            })
+        except Exception as e:
+            return Response({
+                'status': 403,
+                'message': "Invalid value"
+            })
 
 
 
