@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 SMS_TOKEN = env('SMS_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fbfa-146-120-232-142.ngrok.io', '*']
 
 
 # Application definition
@@ -29,7 +29,10 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'rest_framework.authtoken',
-    'sms'
+    'sms',
+    'drf_yasg',
+    'doc',
+
 ]
 
 MIDDLEWARE = [
@@ -61,6 +64,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'settings.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+}
 
 
 # Database
