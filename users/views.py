@@ -32,7 +32,10 @@ class Register(APIView):
                 })
 
             return Response(serializer.errors)
-        except:
+        except Exception as e:
+            print(e)
+            print(request.data)
+
             return Response({
                 'status': 503,
                 'message': 'Error'
@@ -43,8 +46,8 @@ class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            if request.data['Authorization'].split(' ')[1]:
-                user_id = Token.objects.get(key=request.data['Authorization'].split(' ')[1]).user_id
+            if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
+                user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
                 user = User.objects.get(id=user_id)
                 serializer = UserProfileSerializer(user)
                 return Response(serializer.data)
@@ -53,6 +56,8 @@ class UserProfile(APIView):
                 'message': "Invalid token"
             })
         except Exception as e:
+            print('==', e)
+            print('==2', request.data)
             return Response({
                 'status': 503,
                 'message': "Authorization error. Invalid token"
