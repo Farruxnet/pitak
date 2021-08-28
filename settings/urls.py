@@ -11,7 +11,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="PITAK24 API DOCUMENTATION",
         description="REST API",
-        default_version="VERSION 1",
+        default_version="1.0.0",
         terms_of_service="https://t.me/pitak24_bot",
         contact = openapi.Contact(email="farruxbekinfo@gmail.com"),
         license=openapi.License(name="Private"),
@@ -26,4 +26,7 @@ urlpatterns = [
     path('api/v1/', include('users.urls')),
     path('docs-api-swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('docs-api-redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
