@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'sms',
     'drf_yasg',
-    'doc',
 
 ]
 
