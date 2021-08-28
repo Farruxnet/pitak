@@ -8,26 +8,34 @@ from rest_framework.permissions import IsAuthenticated
 
 class Register(APIView):
     def post(self, request):
-        serializer = UserSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            user = User.objects.get(phone_number = serializer.data['phone_number'])
-            token, _  = Token.objects.get_or_create(user=user)
+        try:
+            serializer = UserSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                print(serializer.data)
+                user = User.objects.get(phone_number = serializer.data['phone_number'])
+                token, _  = Token.objects.get_or_create(user=user)
+                return Response({
+                    'status': 200,
+                    'phone_number': serializer.data['phone_number'],
+                    'token': str(token)
+                })
+
+            if User.objects.filter(phone_number=serializer.data['phone_number']).exists():
+                token, _ = Token.objects.get_or_create(user=User.objects.get(phone_number = serializer.data['phone_number']))
+                return Response({
+                    'status': 200,
+                    'phone_number': serializer.data['phone_number'],
+                    'token': str(token)
+                })
+
+            return Response(serializer.errors)
+        except:
             return Response({
-                'status': 200,
-                'phone_number': serializer.data['phone_number'],
-                'token': str(token)
+                'status': 503,
+                'message': 'Error'
             })
 
-        if User.objects.filter(phone_number=serializer.data['phone_number']).exists():
-            token, _ = Token.objects.get_or_create(user=User.objects.get(phone_number = serializer.data['phone_number']))
-            return Response({
-                'status': 200,
-                'phone_number': serializer.data['phone_number'],
-                'token': str(token)
-            })
-
-        return Response(serializer.errors)
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]

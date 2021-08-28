@@ -8,9 +8,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['phone_number', 'password', 'language', 'device']
 
     def create(self, validate_data):
-        user = User.objects.create(phone_number=validate_data['phone_number'])
+        user = User.objects.create(phone_number=validate_data['phone_number'], language = validate_data['language'], device=validate_data['device'])
         user.set_password(hashlib.md5(f'{validate_data["password"]}'.encode("utf-8")).hexdigest()[:10])
         user.save()
+        print(validate_data)
         return user
 
 class UserProfileSerializer(serializers.ModelSerializer):
