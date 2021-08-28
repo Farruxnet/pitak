@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 SMS_TOKEN = env('SMS_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['fbfa-146-120-232-142.ngrok.io', '*']
+ALLOWED_HOSTS = ['*', '45.88.105.228']
 
 
 # Application definition
