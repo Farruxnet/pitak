@@ -34,7 +34,7 @@ class User(AbstractBaseUser):
         ('en', 'Ingliz'),
     )
     phone_number = models.CharField(max_length=12, unique=True)
-    name = models.CharField(max_length=12, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
     language = models.CharField(choices=CHOICES, max_length=3)
     description = models.TextField(null=True, blank=True)
     STATUS_CHOICES = (
