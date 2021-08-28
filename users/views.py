@@ -5,8 +5,10 @@ from . serializer import UserSerializer, UserProfileSerializer
 from rest_framework.response import Response
 from . models import User
 from rest_framework.permissions import IsAuthenticated
+from drf_yasg.utils import swagger_auto_schema
 
 class Register(APIView):
+    @swagger_auto_schema(request_body=UserSerializer)
     def post(self, request):
         try:
             serializer = UserSerializer(data = request.data)
@@ -55,8 +57,7 @@ class UserProfile(APIView):
                 'status': 503,
                 'message': "Authorization error. Invalid token"
             })
-
-
+    @swagger_auto_schema(request_body=UserProfileSerializer)
     def put(self, request):
         try:
             if request.data['Authorization'].split(' ')[1]:

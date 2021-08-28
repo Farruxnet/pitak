@@ -5,7 +5,7 @@ import hashlib
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['phone_number', 'password', 'language', 'device']
+        fields = ['phone_number', 'name', 'password', 'language', 'device', 'profile_photo']
 
     def create(self, validate_data):
         user = User.objects.create(phone_number=validate_data['phone_number'], language = validate_data['language'], device=validate_data['device'])
