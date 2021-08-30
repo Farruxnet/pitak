@@ -8,14 +8,14 @@ from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 
 class Register(APIView):
-    @swagger_auto_schema(request_body=UserSerializer)
+    @swagger_auto_schema(request_body = UserSerializer)
     def post(self, request):
         try:
             serializer = UserSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save()
                 user = User.objects.get(phone_number = serializer.data['phone_number'])
-                token, _  = Token.objects.get_or_create(user=user)
+                token, _ = Token.objects.get_or_create(user=user)
                 return Response({
                     'status': 200,
                     'phone_number': serializer.data['phone_number'],

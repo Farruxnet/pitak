@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'sms',
     'drf_yasg',
     'data',
+    'drivers'
 
 ]
 

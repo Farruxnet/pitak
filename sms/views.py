@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 class SmsView(APIView):
     VALIDATE_CLASS = None
     permission_classes = [AllowAny]
+    
     @swagger_auto_schema(request_body=SmsSerializer)
     def post(self, request):
         serializer = SmsSerializer(data = request.data)

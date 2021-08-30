@@ -66,7 +66,9 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
+    class Meta:
+        verbose_name="Foydalanuvchi"
+        verbose_name_plural="Foydalanuvchilar"
     @property
     def is_staff(self):
         return self.is_admin

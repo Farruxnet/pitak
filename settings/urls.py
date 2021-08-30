@@ -24,6 +24,7 @@ urlpatterns = [
     path('pitak-api-admin-farruxnet/', admin.site.urls),
     path('api/v1/', include('sms.urls')),
     path('api/v1/', include('users.urls')),
+    path('api/v1/', include('data.urls')),
     path('docs-api-swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('docs-api-redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

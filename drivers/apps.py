@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class DataConfig(AppConfig):
+class DriversConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'data'
-    verbose_name="Ma'lumotlar"
+    name = 'drivers'
+    verbose_name='Haydovchilar'
