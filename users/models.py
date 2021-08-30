@@ -39,7 +39,7 @@ class User(AbstractBaseUser):
     description = models.TextField(null=True, blank=True)
     STATUS_CHOICES = (
         ('customer', 'Mijoz'),
-        ('drive', 'Haydovchi'),
+        ('driver', 'Haydovchi'),
     )
     DEVICE_CHOICES = (
         ('ios', 'iOS'),

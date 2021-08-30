@@ -17,4 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'phone_number', 'profile_photo', 'language', 'device', 'description', 'account', 'create_at']
+        fields = ['id', 'name', 'phone_number', 'status', 'profile_photo', 'language', 'device', 'description', 'account', 'create_at']
+
+
+class UserUpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'phone_number', 'profile_photo', 'status', 'language', 'device', 'description']
