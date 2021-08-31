@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from . models import User
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
-
+from rest_framework.parsers import MultiPartParser, FormParser
 class Register(APIView):
     @swagger_auto_schema(request_body = UserSerializer)
     def post(self, request):
@@ -43,6 +43,7 @@ class Register(APIView):
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = (FormParser, MultiPartParser)
     def get(self, request):
         try:
             if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
@@ -66,13 +67,17 @@ class UserProfile(APIView):
 
     @swagger_auto_schema(request_body=UserUpdateProfileSerializer)
     def put(self, request):
+        print(request)
         try:
             if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
                 user = User.objects.get(id=user_id)
                 serializer = UserUpdateProfileSerializer(user, data=request.data)
                 if serializer.is_valid():
-                    serializer.save()
+                    if request.data.get('profile_photo'):
+                        serializer.save(profile_photo=request.data.get('profile_photo'))
+                    else:
+                        serializer.save()
                     return Response({
                         'status': 200,
                         'data': serializer.data
