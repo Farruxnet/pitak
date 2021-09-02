@@ -7,7 +7,11 @@ from . models import User
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.renderers import JSONRenderer
+
 class Register(APIView):
+    renderer_classes = [JSONRenderer]
+
     @swagger_auto_schema(request_body = UserSerializer)
     def post(self, request):
         try:
@@ -43,6 +47,8 @@ class Register(APIView):
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+
     parser_classes = (FormParser, MultiPartParser)
     def get(self, request):
         try:
@@ -67,7 +73,6 @@ class UserProfile(APIView):
 
     @swagger_auto_schema(request_body=UserUpdateProfileSerializer)
     def put(self, request):
-        print(request)
         try:
             if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id

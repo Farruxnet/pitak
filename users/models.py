@@ -21,6 +21,7 @@ class UserManager(BaseUserManager):
             phone_number,
             password=password,
         )
+
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -33,18 +34,22 @@ class User(AbstractBaseUser):
         ('ru', 'Руский'),
         ('en', 'Ingliz'),
     )
+
     phone_number = models.CharField(max_length=12, unique=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     language = models.CharField(choices=CHOICES, max_length=3)
     description = models.TextField(null=True, blank=True)
+
     STATUS_CHOICES = (
         ('customer', 'Mijoz'),
         ('driver', 'Haydovchi'),
     )
+
     DEVICE_CHOICES = (
         ('ios', 'iOS'),
         ('android', 'Android'),
     )
+
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, null=True, blank=True)
     device = models.CharField(choices=DEVICE_CHOICES, max_length=10)
     account = models.PositiveIntegerField(default=0)
@@ -66,9 +71,11 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+        
     class Meta:
         verbose_name="Foydalanuvchi"
         verbose_name_plural="Foydalanuvchilar"
+
     @property
     def is_staff(self):
         return self.is_admin
