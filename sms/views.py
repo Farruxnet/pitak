@@ -14,6 +14,12 @@ class SmsView(APIView):
 
     @swagger_auto_schema(request_body=SmsSerializer)
     def post(self, request):
+        """
+        Telefon Raqamni tasdiqlash kodini mijozga yuborish
+
+
+        ---
+        """
         serializer = SmsSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         if serializer.is_valid():

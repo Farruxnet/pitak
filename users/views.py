@@ -11,9 +11,13 @@ from rest_framework.renderers import JSONRenderer
 
 class Register(APIView):
     renderer_classes = [JSONRenderer]
-
     @swagger_auto_schema(request_body = UserSerializer)
     def post(self, request):
+        """
+        Foydalanuvchini ro'yxatga olish
+
+        ---
+        """
         try:
             serializer = UserSerializer(data = request.data)
             if serializer.is_valid():
@@ -51,6 +55,11 @@ class UserProfile(APIView):
 
     parser_classes = (FormParser, MultiPartParser)
     def get(self, request):
+        """
+        Foydalanuvchini shahsiy ma'lumotlarini olish
+
+        ---
+        """
         try:
             if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
@@ -73,6 +82,11 @@ class UserProfile(APIView):
 
     @swagger_auto_schema(request_body=UserUpdateProfileSerializer)
     def put(self, request):
+        """
+        Foydalanuvchini shahsiy ma'lumotlarini o'zgartirish
+
+        ---
+        """
         try:
             if request.META['HTTP_AUTHORIZATION'].split(' ')[1]:
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id

@@ -17,6 +17,8 @@ class DriverApiView(APIView):
     def post(self, request):
         """
         Haydovchi e'lon qo'shish
+
+
         POST
         :user
         :deriction
@@ -60,6 +62,8 @@ class DriverGetApiView(APIView):
     def get(self, request):
         """
         Haydovchi e'lonini to'liq ko'rish
+
+
         Response
         :id
         :user
@@ -100,6 +104,8 @@ class DriverCartPutApiView(APIView):
     def put(self, request):
         """
         Haydovchi qidiruvga bergan eloni tahrirlash.
+
+        ---
         """
         try:
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
@@ -126,6 +132,8 @@ class DriverCartPostApiView(APIView):
     def post(self, request, format=None):
         """
         Haydovchi Qidiruvga e'lon berish
+
+
         berilgan elon bilan haydovchilar qidiruvda filterlanadi
         POST
         :empty_count
@@ -162,6 +170,8 @@ class DriverCartGetApiView(APIView):
     def get(self, request):
         """
         Haydovchi qidiruvga berilgan e'lon ma'lumotlarini to'liq olish.
+
+
         Response
         :id
         :user
