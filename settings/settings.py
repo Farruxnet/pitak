@@ -10,7 +10,7 @@ env = environ.Env(
 environ.Env.read_env()
 
 DEBUG = env('DEBUG')
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = "django-insecure-zlx#fxi2=upub_m5co)!###y7p==@c*d+n(xyl*%7#qasd4adccbt"
 SMS_TOKEN = env('SMS_TOKEN')
 # SECURITY WARNING: don't run with debug turned on in production!
 
