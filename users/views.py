@@ -15,7 +15,7 @@ class Register(APIView):
     def post(self, request):
         """
         Foydalanuvchini ro'yxatga olish
-
+        
         ---
         """
         try:

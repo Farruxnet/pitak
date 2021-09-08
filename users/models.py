@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
 
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, null=True, blank=True)
     device = models.CharField(choices=DEVICE_CHOICES, max_length=10)
-    account = models.PositiveIntegerField(default=0)
+    account = models.IntegerField(default=0)
     profile_photo = models.ImageField(upload_to='images/', null=True, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -71,7 +71,7 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-        
+
     class Meta:
         verbose_name="Foydalanuvchi"
         verbose_name_plural="Foydalanuvchilar"
