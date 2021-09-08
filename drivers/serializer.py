@@ -27,6 +27,11 @@ class DriverCartGetSerializer(serializers.ModelSerializer):
         model = DriverCart
         fields = '__all__'
 
+class DriverCartPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverCart
+        fields = ['empty_count', 'current_location', 'finish_location', 'delivery']
+
 
 
 

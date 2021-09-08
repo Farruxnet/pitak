@@ -41,6 +41,9 @@ class Driver(models.Model):
     sex = models.CharField(choices=SEX, max_length=5, verbose_name="Jinsi")
     create_at = models.DateTimeField(default=now)
     status = models.BooleanField(choices=STATUS, default=True, verbose_name="Holati")
+    
+    def __str__(self):
+        return str(self.user)
 
     class Meta:
         verbose_name = "Haydovchi"

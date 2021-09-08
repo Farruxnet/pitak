@@ -1,4 +1,4 @@
-from . serializer import DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer
+from . serializer import DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . models import Driver, DriverCart
@@ -18,8 +18,7 @@ class DriverApiView(APIView):
         """
         Haydovchi e'lon qo'shish
 
-
-        POST
+        POST http://127.0.0.1:8000/api/v1/driver/create/
         :user
         :deriction
         :district
@@ -100,7 +99,7 @@ class DriverGetApiView(APIView):
 class DriverCartPutApiView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
-    @swagger_auto_schema(request_body = DriverCartSerializer)
+    @swagger_auto_schema(request_body = DriverCartPutSerializer)
     def put(self, request):
         """
         Haydovchi qidiruvga bergan eloni tahrirlash.
@@ -111,7 +110,7 @@ class DriverCartPutApiView(APIView):
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
             user = User.objects.get(id=user_id)
             driver = DriverCart.objects.get(driver__user=user, status=True)
-            serializer = DriverCartSerializer(driver, data = request.data)
+            serializer = DriverCartPutSerializer(driver, data = request.data)
             if serializer.is_valid():
                 serializer.save()
             return Response({
