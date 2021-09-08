@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'sms',
     'drf_yasg',
     'data',
-    'drivers'
+    'drivers',
+    'customer',
 
 ]
 
@@ -67,6 +68,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'settings.wsgi.application'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
