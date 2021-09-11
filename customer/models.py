@@ -12,6 +12,7 @@ class Customer(models.Model):
     automobile = models.ForeignKey(Automobile, on_delete=models.CASCADE, verbose_name="Avtomobil")
     passengers_count = models.IntegerField(verbose_name="Yo'lovchi soni")
     phone_number = models.CharField(max_length=12, verbose_name="Telefon raqami")
+    found = models.BooleanField(default=False, verbose_name='Qabul qilindi')
     date = models.DateTimeField(default=now, verbose_name="Qo'shilgan vaqti")
     latitude = models.CharField(max_length=150, null=True, blank=True, verbose_name='Location latitude')
     longitude = models.CharField(max_length=150, null=True, blank=True, verbose_name='Location longitude')
@@ -20,7 +21,7 @@ class Customer(models.Model):
         ('man', 'Erkak'),
         ('woman', 'Ayol'),
     )
-    
+
     sex = models.CharField(choices=SEX, max_length=5, verbose_name="Jinsi")
     STATUS = (
         (True, 'Faol'),

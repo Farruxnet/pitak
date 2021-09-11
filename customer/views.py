@@ -13,6 +13,7 @@ from data.models import District, Province, Automobile, Deriction
 class CustomerPostView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
+
     @swagger_auto_schema(request_body = CustomerPostSerializer)
     def post(self, request):
         try:
@@ -25,6 +26,7 @@ class CustomerPostView(APIView):
                 driver__automobile=Automobile.objects.get(id=request.data['automobile']),
                 driver__district__in=[request.data['customer_finish_district']],
                 empty_count__gte=request.data['passengers_count'],
+                status=True
             )
             serializer_result = DriverCartGetAllSerializer(deriction_list, many=True)
             if Customer.objects.filter(user=user).exists():
@@ -34,6 +36,7 @@ class CustomerPostView(APIView):
                 serializer.save(user=user)
                 return Response({
                     'status': 201,
+                    # 'user_data': serializer.data,
                     'data': serializer_result.data
                 })
 
