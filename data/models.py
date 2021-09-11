@@ -58,3 +58,18 @@ class Deriction(models.Model):
     class Meta:
         verbose_name = "Yo'nalish"
         verbose_name_plural = "Yo'nalishlar"
+
+
+class DeliveryType(models.Model):
+    oz = models.CharField(max_length=50, unique=True, verbose_name="O'zbek")
+    uz = models.CharField(max_length=50, unique=True, verbose_name="Узбек")
+    ru = models.CharField(max_length=50, unique=True, verbose_name="Rus")
+    en = models.CharField(max_length=50, unique=True, verbose_name="English")
+    order = models.IntegerField(verbose_name="Saralash o'rni", unique=True)
+
+    def __str__(self):
+        return self.oz
+
+    class Meta:
+        verbose_name = "Pochta turi"
+        verbose_name_plural = "Pochta turi"
