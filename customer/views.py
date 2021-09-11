@@ -10,12 +10,19 @@ from rest_framework.renderers import JSONRenderer
 from drivers.models import Driver, DriverCart
 from data.models import District, Province, Automobile, Deriction
 
+# Mijoz haydovchi qidirish uchun ma'lumotlarni kiritish
 class CustomerPostView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
 
     @swagger_auto_schema(request_body = CustomerPostSerializer)
     def post(self, request):
+        """
+        Mijoz haydovchi qidirish uchun ma'lumotlarni kiritish
+
+
+        ---------
+        """
         try:
             serializer = CustomerPostSerializer(data = request.data)
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
@@ -36,7 +43,6 @@ class CustomerPostView(APIView):
                 serializer.save(user=user)
                 return Response({
                     'status': 201,
-                    # 'user_data': serializer.data,
                     'data': serializer_result.data
                 })
 
@@ -51,10 +57,17 @@ class CustomerPostView(APIView):
             })
 
 
+# Yulovchida haydovchi qidirganda kiritgan ma'lumotlarini e'lonlarini ko'rish
 class CustomerGetView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
     def get(self, request):
+        """
+        Yulovchida haydovchi qidirganda kiritgan ma'lumotlarini e'lonlarini ko'rish
+
+
+        ------------
+        """
         try:
             from rest_framework.pagination import PageNumberPagination
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
@@ -75,13 +88,18 @@ class CustomerGetView(APIView):
                 'data': "Xato "+str(e)
             })
 
-
+# mijoz haydovchi qidirganda kiritgan holatini o'zgartirish
 class CustomerPutView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
 
     @swagger_auto_schema(request_body = CustomerPutSerializer)
     def put(self, request):
+        """
+        Mijoz haydovchi qidirganda kiritgan elonini holatini o'zgartirish
+
+        so'rov tanasida id kaliti va unga qiymat sifatida o'zgarishish kerak bo'lgan e'lon idsi beriladi
+        """
         try:
             customer = Customer.objects.get(id=request.data['id'])
             serializer = CustomerPutSerializer(customer, data = request.data)

@@ -2,6 +2,8 @@ from rest_framework import serializers
 from . models import User
 import hashlib
 
+
+# Ynagi userni ro'yxatga olish
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -14,12 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
         print(validate_data)
         return user
 
+
+# User profilini ma'lumotlarini ko'rish
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'name', 'phone_number', 'status', 'profile_photo', 'language', 'device', 'description', 'account', 'create_at']
 
 
+# User profilini yangilash serializer
 class UserUpdateProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

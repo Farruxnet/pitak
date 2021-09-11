@@ -17,16 +17,8 @@ def sms_sender(phone_number, text):
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
     try:
         if response.json()['status'] == 'error':
-            print('xato')
-            print(phone_number)
-            print(text)
-            print(response.json())
             return False
         else:
-            print('okay')
-            print(phone_number)
-            print(text)
-            print(response.json())
             return True
     except Exception as e:
         print(e)

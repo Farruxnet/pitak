@@ -11,12 +11,20 @@ from drivers.models import DriverCart
 from customer.serializer import DriverCartGetAllSerializer
 from data.models import Province, District
 
+
+# Pochtani view qismi qo'shish
 class DeliveryPostView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
 
     @swagger_auto_schema(request_body = DeliveryPostSerializer)
     def post(self, request):
+        """
+        Mijoz pochta yuborish
+
+
+        -----------
+        """
         try:
             from rest_framework.pagination import PageNumberPagination
             paginator = PageNumberPagination()
@@ -34,6 +42,8 @@ class DeliveryPostView(APIView):
             )
             page = paginator.paginate_queryset(driver_list, request)
 
+            # Agar yulovchida faol elon bo'lsa va yana e'lon qo'shmoqchi bo'lsa
+            # oldingi faol eloni nofaolga o'zgartiradi
             if Delivery.objects.filter(user=user, status=True).exists():
                 Delivery.objects.filter(user=user, status=True).update(status=False)
 
@@ -56,11 +66,18 @@ class DeliveryPostView(APIView):
                 'data': "Xato "+str(e)
             })
 
+
+# Mijoz qo'shgan pochta e'lonini to'liq ko'rish
 class DeliveryGetView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
+        """
+        Mijoz pochta e'lonini to'liq ko'rish
+
+        Yo'lovchi e'lonini ko'rishimiz uchun so'rov tanasiga id kalitiga ko'rish kerak bo'lgan elonni idsi beriladi
+        """
         try:
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
             user = User.objects.get(id=user_id)
@@ -76,12 +93,19 @@ class DeliveryGetView(APIView):
                 'data': "Xato e'lon mavjud emas! Yoki ma'lumotlar to'g'ri kelmadi "+str(e)
             })
 
+# Mijoz qo'shgan e'lonini o'zgartirish
 class DeliveryPutView(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
 
     @swagger_auto_schema(request_body = DeliveryPutSerializer)
     def put(self, request):
+        """
+        Mijoz pochta e'lonini o'zgartirish
+
+        Faqat holati o'zgartiriladi ya'ni agar elon qabul qilinsa yoki bekor qilinsa
+        status False ga. Agar haydovchi qabul qilsa found Ture ga o'zgartiriladi.
+        """
         try:
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
             user = User.objects.get(id=user_id)

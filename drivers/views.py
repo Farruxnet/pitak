@@ -38,6 +38,8 @@ class DriverApiView(APIView):
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
                 user = User.objects.get(id=user_id)
                 if Driver.objects.filter(user=user).exists():
+                    # Agar haydovchida elon bo'lsa boshqa e'lon qo'shish imkoniyati bo'lmaydi
+                    # bitta haydovchi bitta elon qo'shishi mumkin
                     return Response({
                         'status': 400,
                         'error': "Ushbu foydalanuvchida e'lon mavjud"
@@ -155,6 +157,7 @@ class DriverCartPutApiView(APIView):
                 'error': "Avtorizatsiydan o'tmadi."+str(e)
             })
 
+# Haydovchi qidiruvga e'lon berish ishga chiqaman bosilganda
 class DriverCartPostApiView(APIView):
     renderer_classes = [JSONRenderer]
     permission_classes = [IsAuthenticated]
@@ -196,6 +199,7 @@ class DriverCartPostApiView(APIView):
             })
 
 
+# haydovchini qidiruvga bergan e'lonini o'ziga ko'rsatish
 class DriverCartGetApiView(APIView):
     renderer_classes = [JSONRenderer]
     permission_classes = [IsAuthenticated]

@@ -15,7 +15,7 @@ class Register(APIView):
     def post(self, request):
         """
         Foydalanuvchini ro'yxatga olish
-        
+
         ---
         """
         try:
@@ -31,6 +31,8 @@ class Register(APIView):
                 })
 
             if User.objects.filter(phone_number=serializer.data['phone_number']).exists():
+                # agar user bo'lsa bor userni ma'lumotlarini qaytaradi
+                # User tablitsada bo'lsa token bo'lmasa yangi token generatsiya qiladi
                 token, _ = Token.objects.get_or_create(user=User.objects.get(phone_number = serializer.data['phone_number']))
                 return Response({
                     'status': 200,
@@ -49,6 +51,8 @@ class Register(APIView):
             })
 
 
+# Userni shaxsiy ma'lumotlarini chiqarib beradi get
+# Ma'lumotlarini o'zgartiradi put
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]

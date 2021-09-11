@@ -25,6 +25,7 @@ class SmsView(APIView):
         if serializer.is_valid():
             serializer.save()
             if sms_sender(serializer.data['phone_number'], serializer.data['code']):
+                # Raqam tekshiriladi format to'g'ri kelmasa False qaytaradi
                 return Response({
                     'status': 200,
                     'code': serializer.data['code'],
