@@ -20,7 +20,7 @@ class DriverGetSerializer(serializers.ModelSerializer):
 class DriverCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverCart
-        fields = ['empty_count', 'current_location', 'finish_location', 'delivery']
+        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'amount']
 
 class DriverCartGetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,7 +30,7 @@ class DriverCartGetSerializer(serializers.ModelSerializer):
 class DriverCartPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverCart
-        fields = ['empty_count', 'current_location', 'finish_location', 'delivery']
+        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'amount']
 
 
 

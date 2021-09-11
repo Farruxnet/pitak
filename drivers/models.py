@@ -41,13 +41,15 @@ class Driver(models.Model):
     sex = models.CharField(choices=SEX, max_length=5, verbose_name="Jinsi")
     create_at = models.DateTimeField(default=now)
     status = models.BooleanField(choices=STATUS, default=True, verbose_name="Holati")
-    
+
     def __str__(self):
         return str(self.user)
 
     class Meta:
         verbose_name = "Haydovchi"
         verbose_name_plural = "Haydovchi e'loni"
+
+
 
 class DriverCart(models.Model):
     STATUS = (
@@ -60,6 +62,7 @@ class DriverCart(models.Model):
     current_location = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='currentlocation', verbose_name="Hozirgi manzil")
     finish_location = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='finishlocation', verbose_name="Boradigan manzil")
     empty_count = models.IntegerField(verbose_name="Bo'sh joylar soni")
+    amount = models.IntegerField(default=0, verbose_name='Narxi (narx kiritilmasa kelishilgan narx tanlanadi)')
     delivery = models.BooleanField(default=True, verbose_name="Pochta")
     create_at = models.DateTimeField(default=now)
     status = models.BooleanField(choices=STATUS, default=True, verbose_name="Holati")

@@ -47,11 +47,42 @@ class DriverApiView(APIView):
                     'status': 201,
                     'data': serializer.data
                 })
+            return Response({
+                'status': 400,
+                'data': serializer.errors
+            })
 
         except Exception as e:
             return Response({
                 'status': 400,
                 'data': str(e)
+            })
+
+# Haydovchi elonini o'zgartirish
+class DriverPutApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    @swagger_auto_schema(request_body = DriverSerializer)
+    def put(self, request):
+        try:
+            user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
+            user = User.objects.get(id=user_id)
+            user_driver = Driver.objects.get(user=user)
+            serializer = DriverSerializer(user_driver, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    'status': 200,
+                    'data': serializer.data
+                })
+            return Response({
+                'status': 400,
+                'data': serializer.errors
+            })
+        except Exception as e:
+            return Response({
+                'status': 404,
+                'data': "Xatolik "+str(e)
             })
 
 # Haydovchi elonini ko'rish
@@ -163,6 +194,8 @@ class DriverCartPostApiView(APIView):
                 'status': 201,
                 'data': str(e)
             })
+
+
 class DriverCartGetApiView(APIView):
     renderer_classes = [JSONRenderer]
     permission_classes = [IsAuthenticated]
