@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from . models import Driver, DriverCart
+from . models import Driver, DriverCart, Rating
+
+
+# Haydovchi reytingi
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ['user', 'rating_talk', 'rating_time', 'rating_clean']
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,7 +40,7 @@ class DriverCartGetSerializer(serializers.ModelSerializer):
 class DriverCartPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverCart
-        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'amount']
+        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'amount', 'status']
 
 
 

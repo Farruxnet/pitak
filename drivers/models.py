@@ -66,7 +66,7 @@ class DriverCart(models.Model):
     delivery = models.BooleanField(default=True, verbose_name="Pochta")
     create_at = models.DateTimeField(default=now)
     status = models.BooleanField(choices=STATUS, default=True, verbose_name="Holati")
-
+    rating = models.FloatField(default=0.0, verbose_name="Reyting")
     def __str__(self):
         return str(self.driver)
 
@@ -75,11 +75,26 @@ class DriverCart(models.Model):
         verbose_name_plural = "Qidiruv e'loni"
 
 
+class Rating(models.Model):
+    RATING = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
+    rating_clean = models.IntegerField(choices=RATING, default=0, verbose_name="Tozalik Ball")
+    rating_talk = models.IntegerField(choices=RATING, default=0, verbose_name="Muomila Ball")
+    rating_time = models.IntegerField(choices=RATING, default=0, verbose_name="Vaqtida kelishi Ball")
+    comment = models.CharField(max_length=255, verbose_name="Izoh")
 
+    def __str__(self):
+        return str(self.user)
 
-
-
-
+    class Meta:
+        verbose_name = "Reyting"
+        verbose_name_plural = "Reytinglar"
 
 
 

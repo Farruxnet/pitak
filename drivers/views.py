@@ -1,4 +1,4 @@
-from . serializer import DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
+from . serializer import RatingSerializer, DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . models import Driver, DriverCart
@@ -8,6 +8,19 @@ from rest_framework.authtoken.models import Token
 from users.models import User
 from drivers.models import Driver, DriverCart
 from rest_framework.renderers import JSONRenderer
+
+
+class DriverRatingPost(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    @swagger_auto_schema(request_body = RatingSerializer)
+    def post(self, request):
+        try:
+            serializer = RatingSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+        except Exception as e:
+            raise
 
 # Haydovchi elon qo'shish
 class DriverApiView(APIView):
@@ -146,15 +159,19 @@ class DriverCartPutApiView(APIView):
             serializer = DriverCartPutSerializer(driver, data = request.data)
             if serializer.is_valid():
                 serializer.save()
+                return Response({
+                    'status': 200,
+                    'data': serializer.data
+                })
             return Response({
-                'status': 200,
-                'data': serializer.data
+                'status': 400,
+                'data': serializer.errors
             })
 
         except Exception as e:
             return Response({
                 'status': 400,
-                'error': "Avtorizatsiydan o'tmadi."+str(e)
+                'error': "Avtorizatsiydan o'tmadi. Yoki faol e'lon mavjud emas! "+str(e)
             })
 
 # Haydovchi qidiruvga e'lon berish ishga chiqaman bosilganda
