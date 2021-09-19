@@ -24,4 +24,4 @@ class CustomerGetSerializer(serializers.ModelSerializer):
 class DriverCartGetAllSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverCart
-        fields = ['id', 'driver', 'customer', 'amount', 'delivery_user', 'current_location', 'finish_location', 'empty_count']
+        fields = ['id', 'rating', 'driver', 'customer', 'amount', 'delivery_user', 'current_location', 'finish_location', 'empty_count']
