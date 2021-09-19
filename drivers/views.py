@@ -1,7 +1,7 @@
 from . serializer import RatingSerializer, DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from . models import Driver, DriverCart
+from . models import Driver, DriverCart, Rating
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
@@ -180,6 +180,7 @@ class DriverCartPostApiView(APIView):
     permission_classes = [IsAuthenticated]
     @swagger_auto_schema(request_body = DriverCartSerializer)
     def post(self, request, format=None):
+        from django.db.models import Sum
         """
         Haydovchi Qidiruvga e'lon berish
 
@@ -197,21 +198,23 @@ class DriverCartPostApiView(APIView):
                 user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
                 user = User.objects.get(id=user_id)
                 driver = Driver.objects.get(user__id=user_id, status=True)
+                user_rating = Rating.objects.filter(user=user).aggregate(Sum('rating_clean'), Sum('rating_talk'), Sum('rating_time'))
+                total_sum_rating = (user_rating['rating_clean__sum'] + user_rating['rating_talk__sum'] + user_rating['rating_time__sum']) / (3 * Rating.objects.filter(user=user).count())
                 if DriverCart.objects.filter(driver=driver, status=True).exists():
                     DriverCart.objects.filter(driver=driver, status=True).update(status=False)
-                serializer.save(driver=driver)
+                serializer.save(driver=driver, rating="%0.2f" % total_sum_rating)
                 return Response({
                     'status': 201,
                     'data': serializer.data
                 })
             return Response({
-                'status': 201,
+                'status': 400,
                 'data': serializer.errors
             })
 
         except Exception as e:
             return Response({
-                'status': 201,
+                'status': 400,
                 'data': str(e)
             })
 
@@ -238,14 +241,20 @@ class DriverCartGetApiView(APIView):
         try:
             user_id = Token.objects.get(key=request.META['HTTP_AUTHORIZATION'].split(' ')[1]).user_id
             user = User.objects.get(id=user_id)
-            driver = DriverCart.objects.get(driver__user=user_id, status=True)
-            serializer = DriverCartGetSerializer(driver)
+            if DriverCart.objects.filter(driver__user=user_id, status=True).exists():
+                driver = DriverCart.objects.get(driver__user=user_id, status=True)
+                print('==', driver)
+                serializer = DriverCartGetSerializer(driver)
+                return Response({
+                    'status': 200,
+                    'data': serializer.data
+                })
             return Response({
-                'status': 200,
-                'data': serializer.data
+                'status': 404,
+                'data': "Bu foydalanuvchida faol e'lon yo'q!"
             })
         except Exception as e:
             return Response({
                 'status': 400,
-                'error': str(e)
+                'error': "Xatolik "+str(e)
             })

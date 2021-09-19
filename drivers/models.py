@@ -87,7 +87,7 @@ class Rating(models.Model):
     rating_clean = models.IntegerField(choices=RATING, default=0, verbose_name="Tozalik Ball")
     rating_talk = models.IntegerField(choices=RATING, default=0, verbose_name="Muomila Ball")
     rating_time = models.IntegerField(choices=RATING, default=0, verbose_name="Vaqtida kelishi Ball")
-    comment = models.CharField(max_length=255, verbose_name="Izoh")
+    comment = models.CharField(max_length=255, verbose_name="Izoh", null=True, blank=True)
 
     def __str__(self):
         return str(self.user)

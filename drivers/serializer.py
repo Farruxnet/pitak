@@ -28,7 +28,7 @@ class DriverGetSerializer(serializers.ModelSerializer):
 class DriverCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverCart
-        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'amount']
+        fields = ['empty_count', 'current_location', 'finish_location', 'delivery', 'rating', 'amount']
 
 # Haydovchi qidiruvga bergan elonlarini oladi
 class DriverCartGetSerializer(serializers.ModelSerializer):
