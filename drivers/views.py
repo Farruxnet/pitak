@@ -1,4 +1,4 @@
-from . serializer import RatingSerializer, DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
+from . serializer import RatingSerializer, RatingGetSerializer, DriverSerializer, DriverCartSerializer, DriverGetSerializer, DriverCartGetSerializer, DriverCartPutSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from . models import Driver, DriverCart, Rating
@@ -9,18 +9,64 @@ from users.models import User
 from drivers.models import Driver, DriverCart
 from rest_framework.renderers import JSONRenderer
 
+class DriverRatingGet(APIView):
+    permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
+    def get(self, request):
+        """
+        Haydovchiga qo'yilgan baholar ro'yxati
+
+        --
+        """
+        try:
+            driver_comments = Rating.objects.filter(user=request.data['user'])
+            serializer = RatingGetSerializer(driver_comments, many=True)
+            if driver_comments.exists():
+                driver_rating = DriverCart.objects.filter(driver__user=request.data['user']).last().rating
+                return Response({
+                    'status': 200,
+                    'rating': driver_rating,
+                    'data': serializer.data
+                })
+            return Response({
+                'status': 404,
+                'data': "Ushbu haydovchiga baho berilmagan"
+            })
+        except Exception as e:
+            return Response({
+                'status': 400,
+                'data': "Xatolik "+str(e)
+            })
 
 class DriverRatingPost(APIView):
     permission_classes = [IsAuthenticated]
     renderer_classes = [JSONRenderer]
     @swagger_auto_schema(request_body = RatingSerializer)
     def post(self, request):
+        """
+        Haydovchiga yo'lovchi baho berishi
+
+
+        -----
+        """
         try:
             serializer = RatingSerializer(data = request.data)
+            user = User.objects.get(id=request.data['user'])
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(user=user)
+                return Response({
+                    'status': 201,
+                    'data': serializer.data
+                })
+            return Response({
+                'status': 400,
+                'data': serializer.errors
+            })
         except Exception as e:
-            raise
+            return Response({
+                'status': 400,
+                'data': "Xatolik "+str(e)
+            })
 
 # Haydovchi elon qo'shish
 class DriverApiView(APIView):

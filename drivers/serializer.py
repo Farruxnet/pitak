@@ -3,10 +3,16 @@ from . models import Driver, DriverCart, Rating
 
 
 # Haydovchi reytingi
+class RatingGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ['user', 'comment']
+
+# Haydovchi reytingi
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = ['user', 'rating_talk', 'rating_time', 'rating_clean']
+        fields = ['user', 'rating_talk', 'rating_time', 'rating_clean', 'comment']
 
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
