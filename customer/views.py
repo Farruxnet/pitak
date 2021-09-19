@@ -34,7 +34,8 @@ class CustomerPostView(APIView):
                 driver__district__in=[request.data['customer_finish_district']],
                 empty_count__gte=request.data['passengers_count'],
                 status=True
-            )
+            ).order_by('rating')
+            
             serializer_result = DriverCartGetAllSerializer(deriction_list, many=True)
             if Customer.objects.filter(user=user).exists():
                 Customer.objects.filter(user=user).update(status=False)
