@@ -245,7 +245,10 @@ class DriverCartPostApiView(APIView):
                 user = User.objects.get(id=user_id)
                 driver = Driver.objects.get(user__id=user_id, status=True)
                 user_rating = Rating.objects.filter(user=user).aggregate(Sum('rating_clean'), Sum('rating_talk'), Sum('rating_time'))
-                total_sum_rating = (user_rating['rating_clean__sum'] + user_rating['rating_talk__sum'] + user_rating['rating_time__sum']) / (3 * Rating.objects.filter(user=user).count())
+                if user_rating['rating_clean__sum'] == None or user_rating['rating_talk__sum'] == None or user_rating['rating_time__sum'] == None:
+                    total_sum_rating = 0.0
+                else:
+                    total_sum_rating = (user_rating['rating_clean__sum'] + user_rating['rating_talk__sum'] + user_rating['rating_time__sum']) / (3 * Rating.objects.filter(user=user).count())
                 if DriverCart.objects.filter(driver=driver, status=True).exists():
                     DriverCart.objects.filter(driver=driver, status=True).update(status=False)
                 serializer.save(driver=driver, rating="%0.2f" % total_sum_rating)
@@ -261,7 +264,7 @@ class DriverCartPostApiView(APIView):
         except Exception as e:
             return Response({
                 'status': 400,
-                'data': str(e)
+                'data': "Xatolik: " + str(e)
             })
 
 
