@@ -11,7 +11,6 @@ from drivers.models import DriverCart
 from customer.serializer import DriverCartGetAllSerializer
 from data.models import Province, District
 
-
 # Pochtani view qismi qo'shish
 class DeliveryPostView(APIView):
     permission_classes = [IsAuthenticated]
