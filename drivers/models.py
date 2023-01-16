@@ -57,8 +57,8 @@ class DriverCart(models.Model):
         (False, 'Nofaol'),
     )
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, verbose_name="Haydovchi", null=True, blank=True)
-    customer = models.ManyToManyField(User, related_name='customer', verbose_name="Yulovchi", null=True, blank=True)
-    delivery_user = models.ManyToManyField(User, related_name='delivery_user', verbose_name="Olingan pochta egasi", null=True, blank=True)
+    customer = models.ManyToManyField(User, related_name='customer', verbose_name="Yulovchi")
+    delivery_user = models.ManyToManyField(User, related_name='delivery_user', verbose_name="Olingan pochta egasi")
     current_location = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='currentlocation', verbose_name="Hozirgi manzil")
     finish_location = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='finishlocation', verbose_name="Boradigan manzil")
     empty_count = models.IntegerField(verbose_name="Bo'sh joylar soni")
